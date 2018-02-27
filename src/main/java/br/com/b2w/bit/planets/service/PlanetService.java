@@ -1,7 +1,7 @@
 package br.com.b2w.bit.planets.service;
 
+import br.com.b2w.bit.planets.api.annotation.Collection;
 import br.com.b2w.bit.planets.model.Planet;
-import br.com.b2w.bit.planets.producer.Collection;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.UpdateResult;
@@ -21,9 +21,10 @@ public class PlanetService extends Service {
         super(collection);
     }
 
-    public List<Planet> listByName(String name) {
+    public List<Planet> listByName(String name, Pagination pagination) {
         try {
-            FindIterable<Planet> results = collection.find(eq("nome", name), Planet.class);
+            FindIterable<Planet> results = collection.find(eq("nome", name), Planet.class)
+                    .skip(pagination.getOffset()).limit(pagination.getLimit());
             return results.into(new ArrayList<>());
         } catch (Exception e) {
             //

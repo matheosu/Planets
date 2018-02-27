@@ -42,6 +42,16 @@ public class Service {
         return Collections.emptyList();
     }
 
+    public <T extends Entity> List<T> list(Class<T> clazz, Pagination pagination) {
+        try {
+            FindIterable<T> result = collection.find(clazz).skip(pagination.getOffset()).limit(pagination.getLimit());
+            return result.into(new ArrayList<>());
+        } catch (Exception e) {
+            //
+        }
+        return Collections.emptyList();
+    }
+
 
     public <T extends Entity> void save(T entity) {
         try {
