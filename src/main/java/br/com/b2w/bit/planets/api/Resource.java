@@ -23,7 +23,6 @@ class Resource {
         return Response.ok(new GenericEntity<Object>(object) {}).build();
     }
 
-
     <T> Response okWeekETag(T object, CacheControl cacheControl){
         return okETag(object, cacheControl, true);
     }
@@ -45,8 +44,8 @@ class Resource {
             if (builder != null)
                 return builder.cacheControl(cacheControl).build();
         } catch (Exception e) {
-//            logger.error("Error to evaluate preconditions. ETag {} Weak {}", tag, weak);
-//            logger.error(e.getMessage());
+//            "Error to evaluate preconditions. ETag {} Weak {}", tag, weak;
+//            e.getMessage();
         }
 
         return Response.ok(new GenericEntity<Object>(object) {})

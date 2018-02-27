@@ -1,5 +1,6 @@
 package br.com.b2w.bit.planets.dto;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -7,6 +8,7 @@ public class PlanetIn implements Serializable {
 
     private static final long serialVersionUID = -8211699269672116864L;
 
+    @NotNull
     private String nome;
     private String clima;
     private String terreno;

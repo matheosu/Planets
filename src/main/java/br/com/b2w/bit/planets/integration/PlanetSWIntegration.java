@@ -21,15 +21,15 @@ public class PlanetSWIntegration {
     }
 
     @Asynchronous
-    public void updateFilms(final Planet planet) {
+    public void getFilmsFromIntegration(final Planet planet) {
         swapi.findPlanet(planet.getNome(), new InvocationCallback<ResultSW<PlanetSW>>() {
             @Override
             public void completed(ResultSW<PlanetSW> planetSWResultSW) {
                 Long count = planetSWResultSW.getCount();
                 if (count < 0) {
-                    // No Planet Found
+                    // TODO Logger No Planet Found
                 } else if (count > 1) {
-                    // Too Many Planet Found
+                    // TODO Logger Too Many Planet Found
                 } else {
                     List<PlanetSW> results = planetSWResultSW.getResults();
                     planetService.updateFilms(planet.get_id(), results.stream().map(PlanetSW::getFilms).count());
@@ -38,7 +38,7 @@ public class PlanetSWIntegration {
 
             @Override
             public void failed(Throwable throwable) {
-
+                // TODO Logger Throwable
             }
         });
     }
