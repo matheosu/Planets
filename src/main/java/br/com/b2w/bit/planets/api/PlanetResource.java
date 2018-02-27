@@ -1,5 +1,6 @@
 package br.com.b2w.bit.planets.api;
 
+import br.com.b2w.bit.planets.api.annotation.Compress;
 import br.com.b2w.bit.planets.converter.PlanetInConverter;
 import br.com.b2w.bit.planets.converter.PlanetOutConverter;
 import br.com.b2w.bit.planets.dto.PlanetIn;
@@ -46,14 +47,13 @@ public class PlanetResource extends Resource {
     }
 
     @GET
+    @Compress
     @Produces({MediaType.APPLICATION_JSON})
-    public Response list(@QueryParam("nome") String nome) {
-        List<Planet> planets;
-        if (Strings.isNotNullAndNotEmptyTrim(nome)) {
-            planets = service.listByName(nome);
-        } else {
-            planets = service.list(Planet.class);
-        }
+    public Response list(@QueryParam("nome") String nome,
+                         @BeanParam PaginationBean pagination) {
+
+        List<Planet> planets = Strings.isNotNullAndNotEmptyTrim(nome) ?
+                               service.listByName(nome, pagination) : service.list(Planet.class, pagination);
         return ok(outConverter.convert(planets));
     }
 
@@ -61,7 +61,8 @@ public class PlanetResource extends Resource {
     @Consumes({MediaType.APPLICATION_JSON})
     public Response create(PlanetIn planetIn) {
         Planet planet = inConverter.convert(planetIn);
-        integration.updateFilms(planet);
+        service.save(planet);
+        integration.getFilmsFromIntegration(planet);
         return created("/{id}", planet.get_id());
     }
 
@@ -71,6 +72,7 @@ public class PlanetResource extends Resource {
         if (service.deleted(id))
             return Response.noContent().build();
 
+        // TODO Internalize
         throw new InternalServerErrorException("Erro ao excluir Planeta id " + id);
     }
 
