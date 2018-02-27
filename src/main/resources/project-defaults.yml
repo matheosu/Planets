@@ -1,9 +1,35 @@
 swarm:
-  network:
-      socket-binding-groups:
-        standard-sockets:
-          http:
-            port: 8080
-  mongo-db:
+  mongodb:
     mongos:
-      
+      mongodb:
+        database: mongodbdb
+        jndi-name:  java:jboss/mongodb/planets
+        id: mongodbplanets
+        module:  org.mongodb.driver.custom
+        security-domain:  mongoRealm
+        hosts:
+          mongodb:
+            outbound-socket-binding-ref: mongodbhosts
+
+  security:
+    security-domains:
+      mongoRealm:
+        cache-type:
+        classic-authentication:
+          login-modules:
+            ConfiguredIdentity:
+              code:  ConfiguredIdentity
+              flag:  required
+              ConfiguredIdentity:
+              module-options:
+                principal:  devuser
+                password:  changethis
+                username:  devuser
+
+  network:
+    socket-binding-groups:
+      standard-sockets:
+        outbound-socket-bindings:
+              mongodbhosts:
+                remote-host: localhost
+                remote-port: 27017
