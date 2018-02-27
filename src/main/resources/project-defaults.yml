@@ -1,0 +1,9 @@
+swarm:
+  network:
+      socket-binding-groups:
+        standard-sockets:
+          http:
+            port: 8080
+  mongo-db:
+    mongos:
+      
