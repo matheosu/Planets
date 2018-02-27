@@ -1,5 +1,6 @@
 package br.com.b2w.bit.planets.producer;
 
+import br.com.b2w.bit.planets.api.annotation.Collection;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
@@ -16,7 +17,7 @@ public class CollectionProducer {
     private final MongoDatabase database;
 
     @Inject
-    public CollectionProducer(@Named("planetsDB") MongoDatabase database) {
+    public CollectionProducer(@Named("mongodb") MongoDatabase database) {
         this.database = database;
     }
     

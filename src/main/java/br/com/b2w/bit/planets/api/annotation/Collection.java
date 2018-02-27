@@ -1,4 +1,4 @@
-package br.com.b2w.bit.planets.producer;
+package br.com.b2w.bit.planets.api.annotation;
 
 
 import javax.enterprise.util.Nonbinding;
