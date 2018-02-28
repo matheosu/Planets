@@ -12,10 +12,13 @@
     <name>API Planets</name>
 
     <properties>
+        <java.ee>7.0</java.ee>
+        <mongo.driver>3.6.3</mongo.driver>
+        <swarm.debug.port>5005</swarm.debug.port>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <version.wildfly.swarm>2018.1.0</version.wildfly.swarm>
+        <version.wildfly.swarm>2018.2.0</version.wildfly.swarm>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -54,15 +57,11 @@
         <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
+            <version>${java.ee}</version>
             <scope>provided</scope>
         </dependency>
 
         <!-- WildFly Swarm Fractions -->
-        <dependency>
-            <groupId>org.wildfly.swarm</groupId>
-            <artifactId>mongodb</artifactId>
-        </dependency>
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>cdi</artifactId>
@@ -71,6 +70,13 @@
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>jaxrs</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>${mongo.driver}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
