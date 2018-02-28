@@ -1,79 +1,92 @@
 package br.com.b2w.bit.planets.service;
 
 import br.com.b2w.bit.planets.model.Entity;
-import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
-import org.bson.Document;
+import org.bson.types.ObjectId;
+import org.jboss.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class Service {
+import static com.mongodb.client.model.Filters.eq;
 
-    static final String ID_PARAM = "_id";
-    static final int DEFAULT_DELETE_RESULT = 0;
+class Service<T extends Entity> {
 
-    final MongoCollection<Document> collection;
-    Service(MongoCollection<Document> collection) {
+    private static final Logger logger = Logger.getLogger(Service.class);
+
+    private static final String ID_PARAM = "_id";
+    private static final int DEFAULT_DELETE_RESULT = 0;
+
+    final MongoCollection<T> collection;
+
+    Service(MongoCollection<T> collection) {
         this.collection = collection;
     }
 
-    public <T extends Entity> Optional<T> findById(String id, Class<T> clazz) {
+    public Optional<T> findById(String id) {
+        return findById(new ObjectId(id));
+    }
+
+    public Optional<T> findById(ObjectId id) {
         try {
-            FindIterable<T> result = collection.find(new BasicDBObject(ID_PARAM, id), clazz);
+            FindIterable<T> result = collection.find(eq(ID_PARAM, id));
             return result != null ? Optional.ofNullable(result.first()) : Optional.empty();
         } catch (Exception e) {
-            //
+            logger.error("Error to findById.", e);
         }
         return Optional.empty();
     }
 
-    public <T extends Entity> List<T> list(Class<T> clazz) {
+    public List<T> list() {
         try {
-            FindIterable<T> result = collection.find(clazz);
+            FindIterable<T> result = collection.find();
             return result.into(new ArrayList<>());
         } catch (Exception e) {
-            //
+            logger.error("Error to list.", e);
         }
         return Collections.emptyList();
     }
 
-    public <T extends Entity> List<T> list(Class<T> clazz, Pagination pagination) {
+    public List<T> list(Pagination pagination) {
         try {
-            FindIterable<T> result = collection.find(clazz).skip(pagination.getOffset()).limit(pagination.getLimit());
+            FindIterable<T> result = collection.find().skip(pagination.getOffset()).limit(pagination.getLimit());
             return result.into(new ArrayList<>());
         } catch (Exception e) {
-            //
+            logger.error("Error to list with Pagination", e);
         }
         return Collections.emptyList();
     }
 
-
-    public <T extends Entity> void save(T entity) {
+    /**
+     * https://jira.mongodb.org/browse/JAVA-2674
+     */
+    public void save(T entity) {
         try {
-            Document document = new Document(entity.toMap());
-            collection.insertOne(document);
-            String id = document.getString(ID_PARAM);
-            entity.set_id(id);
+            entity.setId(new ObjectId());
+            collection.insertOne(entity);
         } catch (Exception e) {
-            //
+            logger.error("Error to save", e);
         }
     }
 
-    public boolean deleted(String id) {
-        return delete(id) > DEFAULT_DELETE_RESULT;
+    public void update(T entity) {
+        collection.replaceOne(eq(ID_PARAM, entity.getId()), entity);
     }
 
     public long delete(String id) {
+        return delete(new ObjectId(id));
+    }
+
+    public long delete(ObjectId id) {
         try {
-            DeleteResult deleteResult = collection.deleteOne(new BasicDBObject(ID_PARAM, id));
+            DeleteResult deleteResult = collection.deleteOne(eq(ID_PARAM, id));
             return deleteResult.getDeletedCount();
         } catch (Exception e) {
-            //
+            logger.error("Error to delete", e);
         }
         return DEFAULT_DELETE_RESULT;
     }
