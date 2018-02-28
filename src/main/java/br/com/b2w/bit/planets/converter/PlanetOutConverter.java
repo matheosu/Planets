@@ -11,10 +11,14 @@ public class PlanetOutConverter extends FunctionConverter<Planet, PlanetOut> {
     Function<Planet, PlanetOut> convertFunction() {
         return planet -> {
             PlanetOut out = new PlanetOut();
-            out.setId(planet.get_id());
+            out.setId(planet.getId().toString());
             out.setNome(planet.getNome());
             out.setClima(planet.getClima());
-            out.setFilmes(planet.getFilmes());
+            if (planet.getQuantidadeFilmes() != null) {
+                out.setQuantidadeFilmes(planet.getQuantidadeFilmes());
+            } else {
+                out.setQuantidadeFilmes(0L);
+            }
             out.setTerreno(planet.getTerreno());
             return out;
         };

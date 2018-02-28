@@ -7,7 +7,8 @@ public class PlanetOut extends PlanetIn {
     private static final long serialVersionUID = -4387426749787466356L;
 
     private String id;
-    private Long filmes;
+
+    private Long quantidadeFilmes;
 
     public String getId() {
         return id;
@@ -17,12 +18,12 @@ public class PlanetOut extends PlanetIn {
         this.id = id;
     }
 
-    public Long getFilmes() {
-        return filmes;
+    public Long getQuantidadeFilmes() {
+        return quantidadeFilmes;
     }
 
-    public void setFilmes(Long filmes) {
-        this.filmes = filmes;
+    public void setQuantidadeFilmes(Long quantidadeFilmes) {
+        this.quantidadeFilmes = quantidadeFilmes;
     }
 
     @Override
@@ -32,11 +33,11 @@ public class PlanetOut extends PlanetIn {
         if (!super.equals(o)) return false;
         PlanetOut planetOut = (PlanetOut) o;
         return Objects.equals(getId(), planetOut.getId()) &&
-                Objects.equals(getFilmes(), planetOut.getFilmes());
+                Objects.equals(getQuantidadeFilmes(), planetOut.getQuantidadeFilmes());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), getId(), getFilmes());
+        return Objects.hash(super.hashCode(), getId(), getQuantidadeFilmes());
     }
 }
