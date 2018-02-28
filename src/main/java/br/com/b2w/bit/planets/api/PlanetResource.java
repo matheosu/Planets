@@ -1,6 +1,5 @@
 package br.com.b2w.bit.planets.api;
 
-import br.com.b2w.bit.planets.api.annotation.Compress;
 import br.com.b2w.bit.planets.converter.PlanetInConverter;
 import br.com.b2w.bit.planets.converter.PlanetOutConverter;
 import br.com.b2w.bit.planets.dto.PlanetIn;
@@ -41,20 +40,20 @@ public class PlanetResource extends Resource {
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response get(@PathParam("id") String id) {
-        Planet planet = service.findById(id, Planet.class).orElseThrow(NotFoundException::new);
+        Planet planet = service.findById(id).orElseThrow(NotFoundException::new);
         PlanetOut out = outConverter.convert(planet);
         return okETag(out, cache);
     }
 
     @GET
-    @Compress
     @Produces({MediaType.APPLICATION_JSON})
     public Response list(@QueryParam("nome") String nome,
                          @BeanParam PaginationBean pagination) {
 
         List<Planet> planets = Strings.isNotNullAndNotEmptyTrim(nome) ?
-                               service.listByName(nome, pagination) : service.list(Planet.class, pagination);
-        return ok(outConverter.convert(planets));
+                               service.listByName(nome, pagination) : service.list(pagination);
+        List<PlanetOut> out = outConverter.convert(planets);
+        return ok(out);
     }
 
     @POST
@@ -63,16 +62,15 @@ public class PlanetResource extends Resource {
         Planet planet = inConverter.convert(planetIn);
         service.save(planet);
         integration.getFilmsFromIntegration(planet);
-        return created("/{id}", planet.get_id());
+        return created("/{id}", planet.getId().toString());
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") String id) {
-        if (service.deleted(id))
+        if (service.delete(id) > 0)
             return Response.noContent().build();
 
-        // TODO Internalize
         throw new InternalServerErrorException("Erro ao excluir Planeta id " + id);
     }
 

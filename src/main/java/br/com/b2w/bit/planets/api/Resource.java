@@ -20,7 +20,8 @@ class Resource {
         if (object instanceof Collection && ((Collection<?>) object).isEmpty())
             throw new NotFoundException();
 
-        return Response.ok(new GenericEntity<Object>(object) {}).build();
+        GenericEntity<Object> entity = new GenericEntity<Object>(object) {};
+        return Response.ok(entity).build();
     }
 
     <T> Response okWeekETag(T object, CacheControl cacheControl){
