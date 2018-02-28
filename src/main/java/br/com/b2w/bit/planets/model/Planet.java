@@ -1,13 +1,6 @@
 package br.com.b2w.bit.planets.model;
 
-import br.com.b2w.bit.planets.util.Strings;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-public class Planet extends Entity {
+public final class Planet extends Entity {
 
     private static final long serialVersionUID = 1936265232662522464L;
 
@@ -15,9 +8,7 @@ public class Planet extends Entity {
     private String clima;
     private String terreno;
 
-    private Long filmes;
-
-    private List<Integration> integrations;
+    private Long quantidadeFilmes;
 
     public String getNome() {
         return nome;
@@ -43,34 +34,13 @@ public class Planet extends Entity {
         this.terreno = terreno;
     }
 
-    public Long getFilmes() {
-        return filmes;
+    public Long getQuantidadeFilmes() {
+        return quantidadeFilmes;
     }
 
-    public void setFilmes(Long filmes) {
-        this.filmes = filmes;
+    public void setQuantidadeFilmes(Long quantidadeFilmes) {
+        this.quantidadeFilmes = quantidadeFilmes;
     }
 
-    public List<Integration> getIntegrations() {
-        return integrations;
-    }
-
-    public void setIntegrations(List<Integration> integrations) {
-        this.integrations = integrations;
-    }
-
-    @Override
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> map = new HashMap<>();
-
-        if (Strings.isNotNullAndNotEmptyTrim(nome))
-            map.put("nome", nome);
-        if (Strings.isNotNullAndNotEmptyTrim(clima))
-            map.put("clima", clima);
-        if (Strings.isNotNullAndNotEmptyTrim(terreno))
-            map.put("terreno", terreno);
-
-        return Collections.unmodifiableMap(map);
-    }
 
 }
