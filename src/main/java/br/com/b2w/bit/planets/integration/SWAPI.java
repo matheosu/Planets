@@ -1,31 +1,56 @@
 package br.com.b2w.bit.planets.integration;
 
+import org.jboss.logging.Logger;
+import org.wildfly.swarm.spi.runtime.annotations.ConfigurationValue;
+
 import javax.annotation.PostConstruct;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.InvocationCallback;
-import javax.ws.rs.client.WebTarget;
+import javax.inject.Inject;
+import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 
 public class SWAPI {
 
     private static final String SEARCH = "search";
 
-    private final Client client = ClientBuilder.newClient();
-
+    private Client client;
     private WebTarget target;
+
+    @Inject
+    @ConfigurationValue("swarm.integration.sw-api.url")
+    private String url;
 
     @PostConstruct
     public void init() {
-        target = client.target("https://swapi.co/api");
+        this.client = ClientBuilder.newClient();
+        this.client.register(new LoggingFilter());
+        this.target = client.target(url);
     }
 
-    public void findPlanet(String name, InvocationCallback<ResultSW<PlanetSW>> callback) {
-        target.path("/planets")
-                .queryParam(SEARCH, name)
-                .request(MediaType.APPLICATION_JSON)
-                .async()
-                .get(callback);
+    public void findPlanets(String name, InvocationCallback<ResultSW<PlanetSW>> callback) {
+        WebTarget planets = target.path("planets/");
+        Invocation.Builder invocation = planets.queryParam(SEARCH, name).request(MediaType.APPLICATION_JSON);
+        invocation.async().get(callback);
+    }
+
+    public static class LoggingFilter implements ClientRequestFilter, ClientResponseFilter {
+        private static final Logger LOG = Logger.getLogger(LoggingFilter.class.getName());
+
+        @Override
+        public void filter(ClientRequestContext requestContext) throws IOException {
+            LOG.info("Requesting");
+            LOG.info(requestContext.getMethod() + ": " + requestContext.getUri());
+            LOG.info("Headers:" + requestContext.getHeaders().toString());
+            if (requestContext.getEntity() != null)
+                LOG.info(requestContext.getEntity().toString());
+        }
+
+        @Override
+        public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
+            LOG.info("Response");
+            LOG.info("Status: " + responseContext.getStatusInfo());
+            LOG.info("Headers: " + responseContext.getHeaders().toString());
+        }
     }
 
 
