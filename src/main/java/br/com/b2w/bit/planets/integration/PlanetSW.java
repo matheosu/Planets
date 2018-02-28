@@ -1,7 +1,7 @@
 package br.com.b2w.bit.planets.integration;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 
 class PlanetSW implements Serializable {
@@ -22,8 +22,8 @@ class PlanetSW implements Serializable {
     private List<String> films;
     private List<String> residents;
 
-    private LocalDateTime edited;
-    private LocalDateTime created;
+    private Calendar edited;
+    private Calendar created;
 
     public String getUrl() {
         return url;
@@ -121,19 +121,19 @@ class PlanetSW implements Serializable {
         this.residents = residents;
     }
 
-    public LocalDateTime getEdited() {
+    public Calendar getEdited() {
         return edited;
     }
 
-    public void setEdited(LocalDateTime edited) {
+    public void setEdited(Calendar edited) {
         this.edited = edited;
     }
 
-    public LocalDateTime getCreated() {
+    public Calendar getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(Calendar created) {
         this.created = created;
     }
 }
