@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import static br.com.b2w.bit.planets.util.Strings.DEFAULT_BREAK_LINE;
 
 @Provider
-public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
+public class RuntimeMapper implements ExceptionMapper<RuntimeException> {
 
     @Override
     public Response toResponse(RuntimeException exception) {
