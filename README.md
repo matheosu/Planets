@@ -21,7 +21,7 @@ Quando estiver configurado, execute o comando:
 * Docker Compose (https://docs.docker.com/compose/install/)
 
 Para a exeção via docker, primeiro faça a geração da imagem do projeto para o seu docker-registry, através do comando:
-``` mvn clean package -pdocker ``` 
+``` mvn clean package -Pdocker ``` 
 
 Após a execução do comando, vai existir uma nova imagem no seu docker-registry chamada **planets**, sendo assim inicie os containers através do Docker Compose assim como o comando:
 ``` docker-compose up ```
