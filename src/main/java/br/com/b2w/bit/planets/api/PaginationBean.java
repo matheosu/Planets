@@ -11,7 +11,7 @@ public class PaginationBean implements Pagination, Serializable {
 
     private static final long serialVersionUID = 6447602044750129683L;
 
-    private static final int  LIMIT_MAX = 500;
+    private static final int  LIMIT_MAX = 100;
 
     private static final String LIMIT = "limit";
     private static final String DEFAULT_LIMIT = "10";
