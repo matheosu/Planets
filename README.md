@@ -11,7 +11,7 @@ Este projeto é uma implementação do desafio da B2W/BIT. O projeto é uma API 
 O arquivo project-default.yml define algumas  configurações para a comunicação do MongoDB, como host, porta e nome do banco de dados.
 
 ## Execução
-Toda e qualquer execução será exposto a porta 8080 e o contexto da aplicação será /api. Caso execute localmente, o acesso a API será assim: http://localhost:8080/api/.
+Toda e qualquer execução será exposto a porta 8080 e o contexto da aplicação será /api. Caso execute localmente, o acesso a API será assim: http://localhost:8080/api/. O Swagger(planets.yml) contém a descrição dos Resources e seus respectivos objetos.
 
 ### Execução via Maven
 Para executar o projeto diretamente, antes faça suas alterações no **project-default.yml** para o apontamento do MongoDB.
