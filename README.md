@@ -23,6 +23,8 @@ Quando estiver configurado, execute o comando:
 * Docker (https://docs.docker.com/install/)
 * Docker Compose (https://docs.docker.com/compose/install/)
 
+*Como descrito no docker-compse do projeto, será iniciado um container com a API de Planetas e um MongoDB.*
+
 Para a exeção via docker, primeiro faça a geração da imagem do projeto para o seu docker-registry, através do comando:
 ``` mvn clean package -Pdocker ``` 
 
@@ -30,3 +32,4 @@ Após a execução do comando, vai existir uma nova imagem no seu docker-registr
 ``` docker-compose up ```
 
 *Caso não queria que os containers fiquem presos execute com o parametro -d ``` docker-compose up -d```*
+
