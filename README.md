@@ -17,8 +17,8 @@ Quando estiver configurado, execute o comando:
 
 ## Execução via Docker
 ### Pré-requisitos
-* Docker
-* Docker Compose
+* Docker (https://docs.docker.com/install/)
+* Docker Compose (https://docs.docker.com/compose/install/)
 
 Para a exeção via docker, primeiro faça a geração da imagem do projeto para o seu docker-registry, através do comando:
 ``` mvn clean package -pdocker ``` 
