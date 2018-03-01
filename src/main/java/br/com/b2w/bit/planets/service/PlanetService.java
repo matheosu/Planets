@@ -10,8 +10,9 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.regex;
 
 public class PlanetService extends Service<Planet> {
 
@@ -24,7 +25,7 @@ public class PlanetService extends Service<Planet> {
 
     public List<Planet> listByName(String name, Pagination pagination) {
         try {
-            FindIterable<Planet> results = collection.find(eq("nome", name), Planet.class)
+            FindIterable<Planet> results = collection.find(regex("nome", Pattern.compile(Pattern.quote(name))))
                     .skip(pagination.getOffset()).limit(pagination.getLimit());
             return results.into(new ArrayList<>());
         } catch (Exception e) {
