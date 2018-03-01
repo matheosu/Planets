@@ -10,13 +10,16 @@ Este projeto é uma implementação do desafio da B2W/BIT. O projeto é uma API 
 ## Configurações
 O arquivo project-default.yml define algumas  configurações para a comunicação do MongoDB, como host, porta e nome do banco de dados.
 
-## Execução via Maven
+## Execução
+Toda e qualquer execução será exposto a porta 8080 e o contexto da aplicaço será /api. Caso execute localmente, o acesso a API será assim: http://localhost:8080/api/.
+
+### Execução via Maven
 Para executar o projeto diretamente, antes faça suas alterações no **project-default.yml** para o apontamento do MongoDB.
 Quando estiver configurado, execute o comando:
 ``` mvn wildfly-swarm:run ```
 
-## Execução via Docker
-### Pré-requisitos
+### Execução via Docker
+#### Pré-requisitos
 * Docker (https://docs.docker.com/install/)
 * Docker Compose (https://docs.docker.com/compose/install/)
 
