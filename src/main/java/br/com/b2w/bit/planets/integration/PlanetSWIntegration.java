@@ -36,7 +36,7 @@ public class PlanetSWIntegration {
                     logger.warn("Too many Planets found in SW API");
                 } else {
                     List<PlanetSW> results = planetSWResultSW.getResults();
-                    films = results.stream().map(PlanetSW::getFilms).count();
+                    films = results.stream().mapToLong(psw -> psw.getFilms().size()).sum();
                 }
                 planet.setQuantidadeFilmes(films);
                 planetService.update(planet);
