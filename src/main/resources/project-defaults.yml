@@ -1,6 +1,6 @@
 swarm:
   mongodb:
-    host: localhost
+    host: mongodb
     port: 27017
     database: universe
   integration:
