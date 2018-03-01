@@ -7,10 +7,7 @@ import com.mongodb.client.result.DeleteResult;
 import org.bson.types.ObjectId;
 import org.jboss.logging.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -19,8 +16,6 @@ class Service<T extends Entity> {
     private static final Logger logger = Logger.getLogger(Service.class);
 
     private static final String ID_PARAM = "_id";
-    private static final int DEFAULT_DELETE_RESULT = 0;
-
     final MongoCollection<T> collection;
 
     Service(MongoCollection<T> collection) {
@@ -77,18 +72,15 @@ class Service<T extends Entity> {
         collection.replaceOne(eq(ID_PARAM, entity.getId()), entity);
     }
 
-    public long delete(String id) {
-        return delete(new ObjectId(id));
-    }
-
-    public long delete(ObjectId id) {
+    public boolean delete(T entity) {
         try {
-            DeleteResult deleteResult = collection.deleteOne(eq(ID_PARAM, id));
-            return deleteResult.getDeletedCount();
+            Objects.requireNonNull(entity);
+            DeleteResult deleteResult = collection.deleteOne(eq(ID_PARAM, entity.getId()));
+            return deleteResult.getDeletedCount() > 0;
         } catch (Exception e) {
             logger.error("Error to delete", e);
         }
-        return DEFAULT_DELETE_RESULT;
+        return false;
     }
 
 }

@@ -40,7 +40,7 @@ public class PlanetResource extends Resource {
     @Path("/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response get(@PathParam("id") String id) {
-        Planet planet = service.findById(id).orElseThrow(NotFoundException::new);
+        Planet planet = service.findById(id).orElseThrow(this::planetNotFound);
         PlanetOut out = outConverter.convert(planet);
         return okETag(out, cache);
     }
@@ -51,7 +51,7 @@ public class PlanetResource extends Resource {
                          @BeanParam PaginationBean pagination) {
 
         List<Planet> planets = Strings.isNotNullAndNotEmptyTrim(nome) ?
-                               service.listByName(nome, pagination) : service.list(pagination);
+                service.listByName(nome, pagination) : service.list(pagination);
         List<PlanetOut> out = outConverter.convert(planets);
         return ok(out);
     }
@@ -68,10 +68,12 @@ public class PlanetResource extends Resource {
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") String id) {
-        if (service.delete(id) > 0)
-            return Response.noContent().build();
+        Planet planet = service.findById(id).orElseThrow(this::planetNotFound);
+        return service.delete(planet) ? Response.noContent().build() : Response.serverError().build();
+    }
 
-        throw new InternalServerErrorException("Erro ao excluir Planeta id " + id);
+    private NotFoundException planetNotFound() {
+        return new NotFoundException("Planeta não encontrado!");
     }
 
 }
