@@ -1,0 +1,142 @@
+swagger: "2.0"
+info:
+  description: "Este projeto é uma implementação do desafio da B2W/BIT. O projeto é uma API REST de Planetas."
+  version: "1.0.0"
+  title: "Planets API"
+  contact:
+    email: "mthcastro@me.com"
+  license:
+    name: "MIT"
+    url: "https://opensource.org/licenses/MIT"
+host: "localhost:8080"
+basePath: "/api"
+schemes:
+- "http"
+paths:
+  /planets:
+    post:
+      tags:
+      - "planets"
+      summary: "Adicionar um novo Planeta"
+      description: ""
+      operationId: "addPet"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/PlanetIn"
+      responses:
+        201:
+          description: "Criado. Localização no cabeçalho Location"
+        400:
+          description: "Requisição inválida"
+        default:
+          $ref: "#/definitions/ErrorMessage"
+    get:
+      tags:
+      - "planets"
+      summary: "Buscando Planeta"
+      description: "Busca planeta informando por nome ou não. Lembrando que há paginação para ambos os casos"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "nome"
+        in: "query"
+        description: "Nome do planeta que irá ser buscado"
+        required: false
+        type: "string"
+      - name: "offset"
+        in: "query"
+        description: "Posição de inicio da busca na lista. Por padrão o valor é 0."
+        required: false
+        type: "integer"
+      - name: "limit"
+        in: "query"
+        description: "Limite máximo de resultados. Por padrão o valor é 10 e o máximo possível é 100."
+        required: false
+        type: "integer"
+      responses:
+        200:
+          description: "Lista de Planetas"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/PlanetOut"
+        404:
+          description: "Não encontrado"
+  /planets/{id}:
+    get:
+      tags:
+      - "planets"
+      summary: "Buscar planeta por ID"
+      description: "Retorna apenas um Planeta"
+      operationId: "getPlanetId"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID do Planeta"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Planeta encontrado"
+          schema:
+            $ref: "#/definitions/PlanetOut"
+        404:
+          description: "Planeta não encontrado"
+    delete:
+      tags:
+      - "planets"
+      summary: "Deletando um planeta"
+      description: "Deleta o planeta informado pelo ID"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID do Planeta"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "Não há mais na base"
+        404:
+          description: "Planeta não encontrado"
+definitions:
+  PlanetIn:
+    type: "object"
+    properties:
+      nome:
+        type: "string"
+      terreno:
+        type: "string"
+      clima:
+        type: "string"
+        
+  PlanetOut:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      nome:
+        type: "string"
+      terreno:
+        type: "string"
+      clima:
+        type: "string"
+      quantidadeFilmes:
+        type: "integer"
+        format: "int32"
+  
+  ErrorMessage:
+    properties:
+      status:
+        type: "integer"
+        format: "int32"
+      title:
+        type: "string"
+      message:
+        type: "string"
