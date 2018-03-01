@@ -1,0 +1,20 @@
+version: '3'
+services:
+  api:
+    image: planets
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - intra-network
+
+  database:
+    image: mongo
+    container_name: mongodb
+    networks:
+      - intra-network
+
+networks:
+  intra-network:
+    driver: bridge
