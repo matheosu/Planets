@@ -53,7 +53,7 @@ public class PlanetResource extends Resource {
         List<Planet> planets = Strings.isNotNullAndNotEmptyTrim(nome) ?
                 service.listByName(nome, pagination) : service.list(pagination);
         List<PlanetOut> out = outConverter.convert(planets);
-        return ok(out);
+        return ok(out, "Nenhum planeta encontrado");
     }
 
     @POST

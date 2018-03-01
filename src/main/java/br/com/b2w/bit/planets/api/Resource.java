@@ -13,12 +13,16 @@ class Resource {
     @Context
     protected Request request;
 
-    <T> Response ok(T object) {
+    <T> Response ok(T object){
+        return ok(object, null);
+    }
+
+    <T> Response ok(T object, String notFoundMessage) {
         if (object == null)
-            throw new NotFoundException();
+            throw new NotFoundException(notFoundMessage);
 
         if (object instanceof Collection && ((Collection<?>) object).isEmpty())
-            throw new NotFoundException();
+            throw new NotFoundException(notFoundMessage);
 
         GenericEntity<Object> entity = new GenericEntity<Object>(object) {};
         return Response.ok(entity).build();
